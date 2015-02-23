@@ -10,7 +10,7 @@
   var typogr = function (obj) { return new Wrapper(obj); };
 
   // Current version
-  typogr.version = '0.6.4';
+  typogr.version = '0.6.5';
 
   // Export the typogr object. In server-side for `require()` API.
   // If we're not in CommonJS, add `typogr` to the global object.
@@ -34,7 +34,7 @@
 
   /**
    * Wraps apersands in HTML with ``<span class="amp">`` so they can be
-   * styled with CSS. Apersands are also normalized to ``&amp;``. Requires 
+   * styled with CSS. Apersands are also normalized to ``&amp;``. Requires
    * ampersands to have whitespace or an ``&nbsp;`` on both sides.
    *
    */
@@ -43,12 +43,13 @@
                 //(    $1   )(     $2       )(   $3    )
       , re_intra_tag = /(<[^<]*>)?([^<]*)(<\/[^<]*>)?/g;
                       //( prefix) ( txt )(  suffix )
-    if( !text ) {
+    if( !text && typeof text !== "string" ) {
       return;
     }
     return text.replace(re_intra_tag, function (str, prefix, text, suffix) {
       prefix = prefix || '';
       suffix = suffix || '';
+      if (prefix.match(re_skip_tags)) return prefix + text + suffix;
       text = text.replace(re_amp, '$1<span class="amp">&amp;</span>$3');
 
       return prefix + text + suffix;
@@ -60,7 +61,7 @@
    *
    */
   var ord = typogr.ord = function(text) {
-    if( !text ) {
+    if( !text && typeof text !== "string" ) {
       return;
     }
 
@@ -115,7 +116,7 @@
              '(\'|&lsquo;|&#8216;))'                  // the left quotes and the primes/
           , 'i');
 
-    if( !text ) {
+    if( !text && typeof text !== "string" ) {
       return;
     }
     return text.replace(re_quote, function (matched_str, dquo, squo) {
@@ -237,7 +238,7 @@
   // ---------------------
 
   /**
-   * Translates plain ASCII punctuation characters into 
+   * Translates plain ASCII punctuation characters into
    * "smart" typographic punctuation HTML entities.
    */
   var smartypants = typogr.smartypants = function(text) {

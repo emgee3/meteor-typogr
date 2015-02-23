@@ -1,14 +1,13 @@
 if (Package.templating) {
   var Template = Package.templating.Template;
-  var UI = Package.ui.UI; // implied by `templating`
-  var HTML = Package.htmljs.HTML; // implied by `ui`
-  var Blaze = Package.blaze.Blaze; // implied by `ui`
+  var Blaze = Package.blaze.Blaze; // implied by `templating`
+  var HTML = Package.htmljs.HTML; // implied by `blaze`
 
-  UI.registerHelper("typogr", Template.__create__('typogr', function () {
+  Blaze.Template.registerHelper("typogr", new Template('typogr', function () {
     var view = this;
     var content = '';
     if (view.templateContentBlock) {
-      content = Blaze.toText(view.templateContentBlock, HTML.TEXTMODE.STRING);
+      content = Blaze._toText(view.templateContentBlock, HTML.TEXTMODE.STRING);
     }
     return HTML.Raw(Typogr.typogrify(content));
   }));
