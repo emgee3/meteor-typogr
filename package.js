@@ -3,7 +3,7 @@
 Package.describe({
   name : 'emgee:typogr',
   summary: "plain text transformations library: amp, windont, smartypants, caps, initQuotes, ord.",
-  version: "0.6.5_1",
+  version: "0.6.5_2",
   git: "https://github.com/emgee3/meteor-typogr.git"
 });
 
